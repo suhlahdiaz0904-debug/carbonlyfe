@@ -1,0 +1,536 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0a;--surf:#141414;--card:#1c1c1c;--card2:#222;
+  --acc:#ffffff;
+  --brd:rgba(255,255,255,0.09);--brd2:rgba(255,255,255,0.18);
+  --txt:#f0f0f0;--muted:#888;--muted2:#444;
+  --fh:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;
+  --ok:#2ecc71;
+}
+body{background:var(--bg);color:var(--txt);font-family:var(--fb);width:380px;}
+.app{width:380px;background:var(--bg);}
+.screen{display:none;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* TOP NAV */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(10,10,10,0.97);border-bottom:0.5px solid var(--brd);position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.08em;color:var(--txt);}
+.topbar-logo span{color:#fff;}
+.topbar-right{display:flex;gap:14px;align-items:center;}
+.ticon{width:20px;height:20px;cursor:pointer;position:relative;}
+.ticon svg{width:100%;height:100%;stroke:var(--txt);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.cbdot{width:7px;height:7px;background:#fff;border-radius:50%;position:absolute;top:-2px;right:-2px;}
+.menu-btn{display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:2px;}
+.menu-btn span{display:block;width:20px;height:1.5px;background:var(--txt);}
+
+/* HERO */
+.hero{position:relative;height:440px;overflow:hidden;background:var(--bg);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:28px 28px;}
+.hero-vline{position:absolute;left:50%;top:0;width:0.5px;height:100%;background:rgba(255,255,255,0.04);}
+.hero-content{position:relative;z-index:2;padding:44px 22px 0;}
+.hero-tag{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:0.22em;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.hero-tag::before{content:'';width:24px;height:0.5px;background:rgba(255,255,255,0.3);}
+.hero-h1{font-family:var(--fh);font-size:56px;font-weight:900;line-height:0.92;letter-spacing:-0.02em;text-transform:uppercase;color:#fff;}
+.hero-h1 .dim{color:rgba(255,255,255,0.25);}
+.hero-p{font-family:var(--fb);font-size:12px;color:var(--muted);line-height:1.7;margin:14px 0 22px;max-width:220px;}
+.hero-btns{display:flex;gap:10px;}
+.hbtn-white{background:#fff;color:#000;border:none;border-radius:6px;padding:11px 22px;font-family:var(--fh);font-size:13px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;}
+.hbtn-ghost{background:transparent;color:#fff;border:0.5px solid rgba(255,255,255,0.25);border-radius:6px;padding:11px 18px;font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;}
+.hero-phones{position:absolute;right:-10px;bottom:0;display:flex;align-items:flex-end;gap:-6px;}
+.hp{width:88px;height:155px;background:var(--card);border-radius:16px;border:0.5px solid rgba(255,255,255,0.1);overflow:hidden;position:relative;flex-shrink:0;}
+.hp-cf{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.05) 0,rgba(255,255,255,0.05) 2px,transparent 2px,transparent 8px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 2px,transparent 2px,transparent 8px);}
+.hp-cam{width:22px;height:22px;background:#0a0a0a;border-radius:7px;position:absolute;top:12px;left:50%;transform:translateX(-50%);}
+.hp-cam::after{content:'';width:11px;height:11px;background:#111;border-radius:50%;position:absolute;top:5.5px;left:5.5px;}
+.hp.c1{transform:rotate(-9deg) translateY(22px);z-index:1;}
+.hp.c2{transform:rotate(-3deg) translateY(8px);z-index:2;width:96px;height:168px;}
+.hp.c3{transform:rotate(5deg) translateY(18px);z-index:1;}
+.hero-badge{position:absolute;left:22px;bottom:22px;background:var(--card);border:0.5px solid var(--brd2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:10px;}
+.hb-num{font-family:var(--fh);font-size:22px;font-weight:900;color:#fff;line-height:1;}
+.hb-lbl{font-size:10px;color:var(--muted);line-height:1.4;}
+
+/* TICKER */
+.ticker{background:#fff;padding:9px 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-flex;gap:0;animation:tick 18s linear infinite;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.tick-item{font-family:var(--fh);font-size:11px;font-weight:900;letter-spacing:0.12em;color:#000;text-transform:uppercase;padding:0 20px;}
+.tick-dot{display:inline-block;width:4px;height:4px;background:#000;border-radius:50%;opacity:0.3;vertical-align:middle;}
+
+/* SECTION */
+.sec{padding:28px 20px;}
+.sec-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;}
+.sec-title{font-family:var(--fh);font-size:26px;font-weight:900;text-transform:uppercase;line-height:1;letter-spacing:-0.01em;}
+.sec-title em{font-style:normal;color:rgba(255,255,255,0.3);}
+.sec-link{font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:0.5px solid var(--muted2);padding-bottom:1px;}
+
+/* PRODUCT CARDS */
+.prods-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;margin:0 -20px;padding-left:20px;padding-right:20px;}
+.prods-scroll::-webkit-scrollbar{display:none;}
+.pc{flex-shrink:0;width:158px;background:var(--card);border-radius:12px;border:0.5px solid var(--brd);overflow:hidden;cursor:pointer;}
+.pc-img{height:156px;background:var(--surf);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pc-badge{position:absolute;top:9px;left:9px;background:#fff;color:#000;font-family:var(--fh);font-size:9px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;}
+.pc-ph{width:58px;height:108px;background:linear-gradient(160deg,#1e1e1e,#111);border-radius:12px;border:0.5px solid rgba(255,255,255,0.08);position:relative;overflow:hidden;}
+.pc-ph-cf{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.06) 0,rgba(255,255,255,0.06) 1.5px,transparent 1.5px,transparent 6px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 1.5px,transparent 1.5px,transparent 6px);}
+.pc-info{padding:10px 12px;}
+.pc-name{font-family:var(--fh);font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:1px;}
+.pc-sub{font-size:11px;color:var(--muted);margin-bottom:8px;}
+.pc-bot{display:flex;align-items:center;justify-content:space-between;}
+.pc-price{font-family:var(--fh);font-size:15px;font-weight:900;color:#fff;}
+.pc-add{width:26px;height:26px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;}
+.pc-add svg{width:12px;height:12px;stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round;}
+
+/* CATEGORIES */
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cat{background:var(--card);border:0.5px solid var(--brd);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;}
+.cat-img{height:80px;background:var(--surf);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.cat-cf{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 2px,transparent 2px,transparent 9px);}
+.cat-icon{position:relative;z-index:1;font-family:var(--fh);font-size:28px;font-weight:900;color:rgba(255,255,255,0.12);letter-spacing:0.02em;}
+.cat-info{padding:9px 11px;}
+.cat-name{font-family:var(--fh);font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1px;}
+.cat-count{font-size:11px;color:var(--muted);}
+
+/* FEATURES STRIP */
+.feats{display:flex;overflow-x:auto;gap:0;scrollbar-width:none;border-top:0.5px solid var(--brd);border-bottom:0.5px solid var(--brd);}
+.feats::-webkit-scrollbar{display:none;}
+.feat{flex-shrink:0;padding:16px 20px;border-right:0.5px solid var(--brd);display:flex;align-items:center;gap:10px;min-width:140px;}
+.feat-ic{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.feat-ic svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.feat-txt .ft{font-family:var(--fh);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:#fff;}
+.feat-txt .fs{font-size:10px;color:var(--muted);}
+
+/* BANNER */
+.banner{margin:0 20px 28px;background:var(--card);border:0.5px solid var(--brd2);border-radius:12px;padding:22px 20px;position:relative;overflow:hidden;}
+.banner-bg{position:absolute;right:0;top:0;bottom:0;width:140px;background:var(--surf);border-left:0.5px solid var(--brd);}
+.banner-bg-cf{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 2px,transparent 2px,transparent 9px);}
+.banner-content{position:relative;z-index:1;max-width:190px;}
+.b-tag{font-family:var(--fh);font-size:9px;font-weight:900;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.b-title{font-family:var(--fh);font-size:22px;font-weight:900;text-transform:uppercase;line-height:1;color:#fff;margin-bottom:8px;}
+.b-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.b-btn{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#000;border:none;border-radius:5px;padding:9px 16px;font-family:var(--fh);font-size:12px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;}
+.b-btn svg{width:12px;height:12px;stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round;}
+.banner-phone{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:64px;height:112px;background:#111;border-radius:12px;border:0.5px solid rgba(255,255,255,0.1);overflow:hidden;z-index:2;}
+.banner-phone-cf{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.06) 0,rgba(255,255,255,0.06) 1.5px,transparent 1.5px,transparent 6px);}
+
+/* TESTIMONIALS */
+.testi-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;margin:0 -20px;padding-left:20px;padding-right:20px;}
+.testi-scroll::-webkit-scrollbar{display:none;}
+.tcard{flex-shrink:0;width:220px;background:var(--card);border:0.5px solid var(--brd);border-radius:10px;padding:14px;}
+.t-stars{display:flex;gap:2px;margin-bottom:8px;}
+.star{width:11px;height:11px;background:#fff;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.t-text{font-size:12px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:10px;}
+.t-auth{display:flex;align-items:center;gap:8px;}
+.t-av{width:28px;height:28px;border-radius:50%;background:var(--card2);border:0.5px solid var(--brd2);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;font-weight:900;color:#fff;flex-shrink:0;}
+.t-name{font-family:var(--fh);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+.t-ver{font-size:10px;color:var(--ok);}
+
+/* INSTAGRAM */
+.ig-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.ig-cell{aspect-ratio:1;background:var(--card);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+.ig-cf{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 2px,transparent 2px,transparent 8px);}
+.ig-lbl{position:relative;z-index:1;font-family:var(--fh);font-size:10px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
+
+/* FOOTER */
+.footer{background:var(--surf);border-top:0.5px solid var(--brd);padding:24px 20px;}
+.footer-logo{font-family:var(--fh);font-size:18px;font-weight:900;letter-spacing:0.08em;color:#fff;margin-bottom:6px;}
+.footer-tagline{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.footer-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px;}
+.fl{font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;}
+.footer-socials{display:flex;gap:10px;margin-bottom:20px;}
+.soc{width:34px;height:34px;background:var(--card);border:0.5px solid var(--brd);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.soc svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.footer-copy{font-size:11px;color:var(--muted2);}
+
+/* BOTTOM NAV */
+.bnav{background:rgba(10,10,10,0.98);border-top:0.5px solid var(--brd);display:flex;padding:10px 0 16px;}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
+.bn-ic{width:20px;height:20px;}
+.bn-ic svg{width:100%;height:100%;stroke:var(--muted);fill:none;stroke-width:1.5;stroke-linecap:round;}
+.bn.on .bn-ic svg{stroke:#fff;}
+.bn-lbl{font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+.bn.on .bn-lbl{color:#fff;}
+
+/* SCREENS */
+.screen.active{display:flex;flex-direction:column;}
+</style>
+
+<h2 class="sr-only">CarbonIsLyfe — halaman home mobile</h2>
+<div class="app" id="app">
+
+<div class="screen active" id="s-home">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="menu-btn"><span></span><span></span><span></span></div>
+    <div class="topbar-logo"><span>CARBON</span>ISLYFE</div>
+    <div class="topbar-right">
+      <div class="ticon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+      <div class="ticon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><div class="cbdot"></div></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-vline"></div>
+    <div class="hero-content">
+      <div class="hero-tag">NEW COLLECTION 2024</div>
+      <div class="hero-h1">CUSTOMIZE<br><span class="dim">YOUR OWN</span><br>CARBON<br>ARMOR</div>
+      <p class="hero-p">Perlindungan kelas militer dari material carbon fiber asli. Ringan, kuat, dan elegan.</p>
+      <div class="hero-btns">
+        <button class="hbtn-white" onclick="go('s-register')">SHOP NOW</button>
+        <button class="hbtn-ghost">LIHAT KOLEKSI</button>
+      </div>
+    </div>
+    <div class="hero-phones">
+      <div class="hp c1"><div class="hp-cf"></div><div class="hp-cam"></div></div>
+      <div class="hp c2"><div class="hp-cf"></div><div class="hp-cam"></div></div>
+      <div class="hp c3"><div class="hp-cf"></div><div class="hp-cam"></div></div>
+    </div>
+    <div class="hero-badge">
+      <div class="hb-num">50+</div>
+      <div class="hb-lbl">Model HP<br>tersedia</div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="tick-item">FREE SHIPPING</span><span class="tick-dot"></span>
+      <span class="tick-item">2 YEAR WARRANTY</span><span class="tick-dot"></span>
+      <span class="tick-item">CARBON FIBER ASLI</span><span class="tick-dot"></span>
+      <span class="tick-item">MIL-GRADE PROTECTION</span><span class="tick-dot"></span>
+      <span class="tick-item">CUSTOM ENGRAVING</span><span class="tick-dot"></span>
+      <span class="tick-item">FREE SHIPPING</span><span class="tick-dot"></span>
+      <span class="tick-item">2 YEAR WARRANTY</span><span class="tick-dot"></span>
+      <span class="tick-item">CARBON FIBER ASLI</span><span class="tick-dot"></span>
+      <span class="tick-item">MIL-GRADE PROTECTION</span><span class="tick-dot"></span>
+      <span class="tick-item">CUSTOM ENGRAVING</span><span class="tick-dot"></span>
+    </div>
+  </div>
+
+  <!-- FEATURES STRIP -->
+  <div class="feats">
+    <div class="feat">
+      <div class="feat-ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="feat-txt"><div class="ft">MIL-GRADE</div><div class="fs">Drop 6ft</div></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="feat-txt"><div class="ft">CARBON ASLI</div><div class="fs">100% genuine</div></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="feat-txt"><div class="ft">ULTRA LIGHT</div><div class="fs">Hanya 18g</div></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+      <div class="feat-txt"><div class="ft">CUSTOMIZE</div><div class="fs">Build sendiri</div></div>
+    </div>
+  </div>
+
+  <!-- BEST SELLERS -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-title">BEST<br><em>SELLERS</em></div>
+      <div class="sec-link">LIHAT SEMUA</div>
+    </div>
+    <div class="prods-scroll">
+      <div class="pc" onclick="go('s-product')">
+        <div class="pc-img"><div class="pc-badge">POPULER</div><div class="pc-ph"><div class="pc-ph-cf"></div></div></div>
+        <div class="pc-info">
+          <div class="pc-name">ARMOR PRO</div>
+          <div class="pc-sub">iPhone 16 / 15 / 14</div>
+          <div class="pc-bot"><span class="pc-price">Rp 1.199K</span><button class="pc-add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+      </div>
+      <div class="pc" onclick="go('s-product')">
+        <div class="pc-img"><div class="pc-ph"><div class="pc-ph-cf"></div></div></div>
+        <div class="pc-info">
+          <div class="pc-name">ULTRA SLIM</div>
+          <div class="pc-sub">Samsung S24 / S23</div>
+          <div class="pc-bot"><span class="pc-price">Rp 899K</span><button class="pc-add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+      </div>
+      <div class="pc" onclick="go('s-product')">
+        <div class="pc-img"><div class="pc-badge">NEW</div><div class="pc-ph"><div class="pc-ph-cf"></div></div></div>
+        <div class="pc-info">
+          <div class="pc-name">STEALTH X</div>
+          <div class="pc-sub">Pixel 9 / 8</div>
+          <div class="pc-bot"><span class="pc-price">Rp 999K</span><button class="pc-add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+      </div>
+      <div class="pc" onclick="go('s-product')">
+        <div class="pc-img"><div class="pc-ph"><div class="pc-ph-cf"></div></div></div>
+        <div class="pc-info">
+          <div class="pc-name">MATTE BLACK</div>
+          <div class="pc-sub">iPhone 16 Pro Max</div>
+          <div class="pc-bot"><span class="pc-price">Rp 1.399K</span><button class="pc-add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="sec" style="padding-top:0;">
+    <div class="sec-hd">
+      <div class="sec-title">KATEGORI<br><em>PRODUK</em></div>
+    </div>
+    <div class="cats">
+      <div class="cat">
+        <div class="cat-img"><div class="cat-cf"></div><div class="cat-icon">iPH</div></div>
+        <div class="cat-info"><div class="cat-name">iPhone</div><div class="cat-count">24 produk</div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-img"><div class="cat-cf"></div><div class="cat-icon">SAM</div></div>
+        <div class="cat-info"><div class="cat-name">Samsung</div><div class="cat-count">18 produk</div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-img"><div class="cat-cf"></div><div class="cat-icon">PIX</div></div>
+        <div class="cat-info"><div class="cat-name">Google Pixel</div><div class="cat-count">10 produk</div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-img"><div class="cat-cf"></div><div class="cat-icon">CUS</div></div>
+        <div class="cat-info"><div class="cat-name">Custom Order</div><div class="cat-count">Build sendiri</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMIZE BANNER -->
+  <div class="banner">
+    <div class="banner-bg"><div class="banner-bg-cf"></div></div>
+    <div class="banner-content">
+      <div class="b-tag">EKSKLUSIF</div>
+      <div class="b-title">BUILD<br>YOUR<br>OWN</div>
+      <div class="b-desc">Pilih pola anyaman, warna aksen, dan ukir nama kamu. Selesai dalam 3 hari kerja.</div>
+      <button class="b-btn" onclick="go('s-product')">
+        MULAI SEKARANG
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="banner-phone"><div class="banner-phone-cf"></div></div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="sec" style="padding-top:0;">
+    <div class="sec-hd">
+      <div class="sec-title">APA KATA<br><em>MEREKA</em></div>
+      <div class="sec-link">SEMUA</div>
+    </div>
+    <div class="testi-scroll">
+      <div class="tcard">
+        <div class="t-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <div class="t-text">"Teksturnya luar biasa. Case ini sudah dua kali jatuh, tidak ada lecet sama sekali."</div>
+        <div class="t-auth"><div class="t-av">AM</div><div><div class="t-name">Alex M.</div><div class="t-ver">✓ Pembeli Terverifikasi</div></div></div>
+      </div>
+      <div class="tcard">
+        <div class="t-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <div class="t-text">"Case terbaik yang pernah saya beli. Premium banget tapi ringan. Worth it!"</div>
+        <div class="t-auth"><div class="t-av">SK</div><div><div class="t-name">Sarah K.</div><div class="t-ver">✓ Pembeli Terverifikasi</div></div></div>
+      </div>
+      <div class="tcard">
+        <div class="t-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <div class="t-text">"Custom engraving-nya keren parah. Carbon fiber pattern-nya terlihat sangat mewah."</div>
+        <div class="t-auth"><div class="t-av">RD</div><div><div class="t-name">Rafi D.</div><div class="t-ver">✓ Pembeli Terverifikasi</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTAGRAM GRID -->
+  <div class="sec" style="padding-top:0;">
+    <div class="sec-hd">
+      <div class="sec-title">@CARBON<br><em>ISLYFE</em></div>
+      <div class="sec-link">FOLLOW</div>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-cell"><div class="ig-cf"></div><div class="ig-lbl">CF01</div></div>
+      <div class="ig-cell" style="background:#181818;"><div class="ig-cf"></div><div class="ig-lbl">CF02</div></div>
+      <div class="ig-cell"><div class="ig-cf"></div><div class="ig-lbl">CF03</div></div>
+      <div class="ig-cell" style="background:#181818;"><div class="ig-cf"></div><div class="ig-lbl">CF04</div></div>
+      <div class="ig-cell"><div class="ig-cf"></div><div class="ig-lbl">CF05</div></div>
+      <div class="ig-cell" style="background:#181818;"><div class="ig-cf"></div><div class="ig-lbl">CF06</div></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">CARBONISLYFE</div>
+    <div class="footer-tagline">Protect what matters. Carbon armor for your world.</div>
+    <div class="footer-links">
+      <span class="fl">Produk</span>
+      <span class="fl">Tentang Kami</span>
+      <span class="fl">Custom Order</span>
+      <span class="fl">FAQ</span>
+      <span class="fl">Kebijakan Privasi</span>
+      <span class="fl">Kontak</span>
+    </div>
+    <div class="footer-socials">
+      <div class="soc"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+      <div class="soc"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+      <div class="soc"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div>
+      <div class="soc"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+    </div>
+    <div class="footer-copy">© 2024 CarbonIsLyfe. All rights reserved.</div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <div class="bn on">
+      <div class="bn-ic"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <span class="bn-lbl">HOME</span>
+    </div>
+    <div class="bn">
+      <div class="bn-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <span class="bn-lbl">PRODUK</span>
+    </div>
+    <div class="bn">
+      <div class="bn-ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+      <span class="bn-lbl">CARI</span>
+    </div>
+    <div class="bn">
+      <div class="bn-ic"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+      <span class="bn-lbl">KERANJANG</span>
+    </div>
+    <div class="bn">
+      <div class="bn-ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="bn-lbl">AKUN</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- SCREENS FROM FLOW (reuse) -->
+<div class="screen" id="s-register">
+  <div class="topbar">
+    <div class="topbar-logo"><span>CARBON</span>ISLYFE</div>
+    <div class="topbar-right"><div class="ticon" onclick="go('s-home')" style="cursor:pointer;"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--txt);fill:none;stroke-width:1.5;stroke-linecap:round;"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+  </div>
+  <div style="font-family:var(--fh);font-size:22px;font-weight:900;text-transform:uppercase;padding:20px 20px 0;">BUAT<br><span style="color:rgba(255,255,255,0.3);">AKUN</span></div>
+  <div style="padding:16px 20px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:var(--card);border:0.5px solid var(--brd2);border-radius:8px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:0.05em;color:var(--txt);text-transform:uppercase;"><div style="width:16px;height:16px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;">G</div>Google</div>
+      <div style="background:var(--card);border:0.5px solid var(--brd2);border-radius:8px;padding:11px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:0.05em;color:var(--txt);text-transform:uppercase;"><div style="width:16px;height:16px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;">A</div>Apple</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin:14px 0;"><div style="flex:1;height:0.5px;background:var(--brd);"></div><span style="font-size:11px;color:var(--muted);font-family:var(--fh);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">atau email</span><div style="flex:1;height:0.5px;background:var(--brd);"></div></div>
+    <div style="margin-bottom:12px;"><div style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Nama Lengkap</div><input style="width:100%;background:var(--card);border:0.5px solid var(--brd2);border-radius:8px;padding:11px 13px;color:var(--txt);font-family:var(--fb);font-size:14px;outline:none;" placeholder="John Doe" type="text"></div>
+    <div style="margin-bottom:12px;"><div style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Email</div><input style="width:100%;background:var(--card);border:0.5px solid var(--brd2);border-radius:8px;padding:11px 13px;color:var(--txt);font-family:var(--fb);font-size:14px;outline:none;" placeholder="john@email.com" type="email"></div>
+    <div style="margin-bottom:12px;"><div style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Password</div><input style="width:100%;background:var(--card);border:0.5px solid var(--brd2);border-radius:8px;padding:11px 13px;color:var(--txt);font-family:var(--fb);font-size:14px;outline:none;" placeholder="Min. 8 karakter" type="password"></div>
+    <button onclick="go('s-product')" style="width:100%;background:#fff;color:#000;border:none;border-radius:8px;padding:14px;font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:4px;">DAFTAR SEKARANG</button>
+    <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:12px;cursor:pointer;">Sudah punya akun? <span style="color:#fff;font-weight:500;text-decoration:underline;" onclick="go('s-product')">Masuk</span></div>
+  </div>
+</div>
+
+<div class="screen" id="s-product">
+  <div class="topbar">
+    <div class="topbar-back" onclick="go('s-home')" style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--muted);font-size:13px;font-family:var(--fh);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>HOME
+    </div>
+    <div class="topbar-right"><div class="ticon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><div class="cbdot"></div></div></div>
+  </div>
+  <div style="padding:16px 20px;">
+    <div style="width:100%;height:200px;background:var(--card);border-radius:12px;border:0.5px solid var(--brd);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:16px;"><div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 2px,transparent 2px,transparent 8px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.03) 0,rgba(255,255,255,0.03) 2px,transparent 2px,transparent 8px);"></div><div style="width:80px;height:140px;background:#111;border-radius:14px;border:0.5px solid rgba(255,255,255,0.12);position:relative;z-index:2;"></div></div>
+    <div style="font-family:var(--fh);font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:4px;">ARMOR PRO</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">Carbon Fiber Case — Military Grade</div>
+    <div style="font-family:var(--fh);font-size:32px;font-weight:900;color:#fff;margin-bottom:16px;">Rp 1.199.000</div>
+    <div style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Pilih Model HP</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+      <div class="mchip sel" style="background:#fff;color:#000;border:0.5px solid #fff;border-radius:20px;padding:6px 14px;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:0.05em;cursor:pointer;">iPhone 16 Pro</div>
+      <div class="mchip" style="background:var(--card);border:0.5px solid var(--brd2);border-radius:20px;padding:6px 14px;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--muted);cursor:pointer;">iPhone 15</div>
+      <div class="mchip" style="background:var(--card);border:0.5px solid var(--brd2);border-radius:20px;padding:6px 14px;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--muted);cursor:pointer;">S24 Ultra</div>
+      <div class="mchip" style="background:var(--card);border:0.5px solid var(--brd2);border-radius:20px;padding:6px 14px;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--muted);cursor:pointer;">Pixel 9</div>
+    </div>
+    <button onclick="go('s-cart')" style="width:100%;background:#fff;color:#000;border:none;border-radius:8px;padding:14px;font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">TAMBAH KE KERANJANG</button>
+  </div>
+</div>
+
+<div class="screen" id="s-cart">
+  <div class="topbar">
+    <div class="topbar-back" onclick="go('s-product')" style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--muted);font-size:13px;font-family:var(--fh);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>KEMBALI</div>
+    <div style="font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.08em;color:#fff;">KERANJANG</div>
+  </div>
+  <div style="padding:16px 20px;">
+    <div style="background:var(--card);border:0.5px solid var(--brd);border-radius:10px;padding:12px;display:flex;gap:12px;margin-bottom:16px;align-items:center;">
+      <div style="width:52px;height:72px;background:var(--surf);border-radius:8px;border:0.5px solid var(--brd);flex-shrink:0;position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.05) 0,rgba(255,255,255,0.05) 1px,transparent 1px,transparent 5px);"></div></div>
+      <div style="flex:1;"><div style="font-family:var(--fh);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:2px;">ARMOR PRO</div><div style="font-size:11px;color:var(--muted);margin-bottom:8px;">iPhone 16 Pro · Pure Black</div><div style="display:flex;align-items:center;gap:10px;"><div style="width:24px;height:24px;background:var(--card2);border:0.5px solid var(--brd);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--txt);">−</div><div style="font-family:var(--fh);font-size:14px;font-weight:700;min-width:16px;text-align:center;">1</div><div style="width:24px;height:24px;background:var(--card2);border:0.5px solid var(--brd);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--txt);">+</div></div></div>
+      <div style="font-family:var(--fh);font-size:16px;font-weight:900;color:#fff;align-self:flex-end;">Rp 1.199K</div>
+    </div>
+    <div style="background:var(--card);border:0.5px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13px;"><span style="color:var(--muted);">Subtotal</span><span style="font-family:var(--fh);font-weight:700;">Rp 1.199.000</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13px;"><span style="color:var(--muted);">Ongkir</span><span style="font-family:var(--fh);font-weight:700;color:var(--ok);">GRATIS</span></div>
+      <div style="display:flex;justify-content:space-between;padding:12px 0 5px;border-top:0.5px solid var(--brd);margin-top:8px;"><span style="font-family:var(--fh);font-size:16px;font-weight:900;text-transform:uppercase;color:#fff;">TOTAL</span><span style="font-family:var(--fh);font-size:20px;font-weight:900;color:#fff;">Rp 1.199.000</span></div>
+    </div>
+    <button onclick="go('s-success')" style="width:100%;background:#fff;color:#000;border:none;border-radius:8px;padding:14px;font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">CHECKOUT SEKARANG</button>
+  </div>
+</div>
+
+<div class="screen" id="s-success">
+  <div class="topbar"><div style="font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.08em;color:var(--txt);"><span style="color:#fff;">CARBON</span>ISLYFE</div></div>
+  <div style="padding:40px 20px 20px;text-align:center;">
+    <div style="width:64px;height:64px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div style="font-family:var(--fh);font-size:32px;font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:8px;">PESANAN<br>DIKONFIRMASI!</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;">Terima kasih! Pesanan kamu sedang kami proses.</div>
+    <div style="font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:0.12em;color:var(--muted);margin-top:8px;">ORDER #CNL-2024-08812</div>
+  </div>
+  <div style="padding:0 20px 20px;">
+    <button onclick="go('s-tracking')" style="width:100%;background:#fff;color:#000;border:none;border-radius:8px;padding:14px;font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-bottom:10px;">LACAK PESANAN</button>
+    <button onclick="go('s-home')" style="width:100%;background:transparent;color:#fff;border:0.5px solid var(--brd2);border-radius:8px;padding:12px;font-family:var(--fh);font-size:14px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">KEMBALI KE BERANDA</button>
+  </div>
+</div>
+
+<div class="screen" id="s-tracking">
+  <div class="topbar">
+    <div class="topbar-back" onclick="go('s-home')" style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--muted);font-size:13px;font-family:var(--fh);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>HOME</div>
+    <div style="font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.08em;color:#fff;">LACAK PESANAN</div>
+  </div>
+  <div style="padding:16px 20px;">
+    <div style="background:var(--card);border:0.5px solid var(--brd);border-radius:12px;padding:16px;margin-bottom:20px;">
+      <div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">RESI: JNE1234567890</div>
+      <div style="font-family:var(--fh);font-size:18px;font-weight:900;text-transform:uppercase;color:#fff;margin-bottom:12px;">DALAM PERJALANAN</div>
+      <div style="height:4px;background:var(--card2);border-radius:2px;overflow:hidden;margin-bottom:8px;"><div style="height:100%;background:#fff;border-radius:2px;width:62%;"></div></div>
+      <div style="display:flex;justify-content:space-between;"><span style="font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;">ORDER</span><span style="font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;">PROSES</span><span style="font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;">KIRIM</span><span style="font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);">TIBA</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="display:flex;gap:12px;padding-bottom:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0;"><div style="width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div style="width:1px;flex:1;background:#fff;margin-top:4px;"></div></div>
+        <div style="flex:1;padding-top:1px;"><div style="font-family:var(--fh);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#fff;margin-bottom:2px;">Pesanan Dikonfirmasi</div><div style="font-size:11px;color:var(--muted);">Pembayaran berhasil diverifikasi</div><div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--muted2);margin-top:2px;">23 Apr 2024 · 09.15</div></div>
+      </div>
+      <div style="display:flex;gap:12px;padding-bottom:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0;"><div style="width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div style="width:1px;flex:1;background:#fff;margin-top:4px;"></div></div>
+        <div style="flex:1;padding-top:1px;"><div style="font-family:var(--fh);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#fff;margin-bottom:2px;">Sedang Dikemas</div><div style="font-size:11px;color:var(--muted);">Produk disiapkan di gudang Jakarta</div><div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--muted2);margin-top:2px;">23 Apr 2024 · 11.30</div></div>
+      </div>
+      <div style="display:flex;gap:12px;padding-bottom:20px;">
+        <div style="display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0;"><div style="width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div style="width:1px;flex:1;background:var(--brd);margin-top:4px;"></div></div>
+        <div style="flex:1;padding-top:1px;"><div style="font-family:var(--fh);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#fff;margin-bottom:2px;">Dalam Perjalanan</div><div style="font-size:11px;color:var(--muted);">JNE · Transit menuju kota tujuan</div><div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--muted2);margin-top:2px;">24 Apr 2024 · 08.00</div></div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0;"><div style="width:20px;height:20px;border-radius:50%;background:var(--card2);border:1.5px solid var(--brd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/></svg></div></div>
+        <div style="flex:1;padding-top:1px;"><div style="font-family:var(--fh);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);margin-bottom:2px;">Tiba di Tujuan</div><div style="font-size:11px;color:var(--muted);">Estimasi: 25 Apr 2024</div></div>
+      </div>
+    </div>
+    <button onclick="go('s-home')" style="width:100%;background:#fff;color:#000;border:none;border-radius:8px;padding:14px;font-family:var(--fh);font-size:15px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:24px;">BELANJA LAGI</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  var el=document.getElementById(id);
+  if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'start'});}
+}
+document.querySelectorAll('.pc-add').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();go('s-cart');});});
+document.querySelectorAll('.mchip').forEach(c=>{
+  c.addEventListener('click',function(){
+    this.closest('div').querySelectorAll('.mchip').forEach(x=>{x.style.background='var(--card)';x.style.color='var(--muted)';x.style.borderColor='var(--brd2)';});
+    this.style.background='#fff';this.style.color='#000';this.style.borderColor='#fff';
+  });
+});
+document.querySelectorAll('.bn').forEach(b=>{
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bn').forEach(x=>x.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+</script>
